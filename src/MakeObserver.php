@@ -75,7 +75,7 @@ class MakeObserver extends Command
 
     public function checkOrMakeSubDir()
     {
-        $dirs = explode('/', $this->argument('name'));
+        $dirs = explode('/', $this->getArgumentAttr('name'));
         if (count($dirs) > 1) {
             array_pop($dirs);
             $path = implode('/', $dirs);
@@ -84,6 +84,11 @@ class MakeObserver extends Command
                 mkdir($this->rootDir.'/'.$path, 0755, 1);
             }
         }
+    }
+
+    public function getArgumentAttr($name)
+    {
+        return str_replace('\\', '/', $this->argument('name'));
     }
 
     public function getModelName()
@@ -116,7 +121,7 @@ class MakeObserver extends Command
         if (!file_exists($observer)) {
             throw new Exception('The observer "' . $observer . '" already exists.');
         } else {
-            return 'observer "' . $this->argument('name') . '" was created sucefully!';
+            return 'observer "' . $this->getArgumentAttr('name') . '" was created sucefully!';
         }
     }
 
@@ -127,12 +132,12 @@ class MakeObserver extends Command
      */
     private function generateName()
     {
-        $name = strripos($this->argument('name'), DIRECTORY_SEPARATOR) != false ?: false;
+        $name = strripos($this->getArgumentAttr('name'), DIRECTORY_SEPARATOR) != false ?: false;
 
         if ($name) {
 
             $path = '';
-            $tree = explode('\\', $this->argument('name'));
+            $tree = explode('\\', $this->getArgumentAttr('name'));
 
             foreach ($tree as $index => $dir) {
                 if ($index == count($tree) -1) {
@@ -158,7 +163,7 @@ class MakeObserver extends Command
             }
             return $this->rootDir . '/' . $path . $newName . '.php';
         }
-        return $this->rootDir . '/' . $this->argument('name') . '.php';
+        return $this->rootDir . '/' . $this->getArgumentAttr('name') . '.php';
     }
 
     /**
@@ -168,13 +173,13 @@ class MakeObserver extends Command
      */
     private function checkName()
     {
-        $name = strripos($this->argument('name'), DIRECTORY_SEPARATOR) != false ?: false;
+        $name = strripos($this->getArgumentAttr('name'), DIRECTORY_SEPARATOR) != false ?: false;
 
         if ($name) {
-            $name = explode('\\', str_replace('/', '\\', $this->argument('name')));
+            $name = explode('\\', str_replace('/', '\\', $this->getArgumentAttr('name')));
             $name = $name[count($name) - 1];
         } else {
-            $name = $this->argument('name');
+            $name = $this->getArgumentAttr('name');
         }
         return ucfirst($name);
     }
@@ -198,7 +203,7 @@ class MakeObserver extends Command
 
 namespace '.$namespace.';
 
-use App\\'.$useClass.';
+// use App\\'.$useClass.';
 
 class %s 
 {
