@@ -30,5 +30,12 @@
         "psr-4": {
             "AjayExpert\\ObserverMaker\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AjayExpert\\ObserverMaker\\ObserverMakerServiceProvider"
+            ]
+        }
     }
 }
